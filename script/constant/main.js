@@ -20,6 +20,7 @@ function modeSwap() {
     document.body.classList.toggle("dark");
     dBTN.classList.toggle("hide");
     nBTN.classList.toggle("hide");
+    console.log("fix");
 }
 
 
