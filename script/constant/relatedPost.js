@@ -68,7 +68,7 @@ if (postPageSure) {
 
     for (let postObj of randomPosts) {
       let imgSrc = postObj.img.replace(`/s72-h400-c/`, `/h180`);
-      eachRelatedPost.innerHTML += `<a href='${postObj.href}'><img src='${imgSrc}' alt='${postObj.title}' height='100'/> <h3>${postObj.title}</h3></a>`;
+      eachRelatedPost.innerHTML += `<a href='${postObj.href}'><img src='${imgSrc}' alt='${postObj.title}' height='180'/> <h3>${postObj.title}</h3></a>`;
     }
 
     relatedPostDiv.appendChild(eachRelatedPost);
