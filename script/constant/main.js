@@ -27,100 +27,95 @@ function modeSwap() {
 
 
 document.querySelector("#cleaner").addEventListener("click", () => {
-    document.querySelector("#text-input").value = ""
+  document.querySelector("#text-input").value = ""
 })
 document.querySelector("#closer").addEventListener("click", () => {
-    document.querySelector("#search-input").removeAttribute("data-nextsiblingon")
+  document.querySelector("#search-input").removeAttribute("data-nextsiblingon")
 })
-
 fetch('https://raw.githubusercontent.com/ToggleKit/config-bb-blogspot/refs/heads/main/urls.json')
-    .then(response => response.json())
-    .then(data => {
-        window.suggestionsData = data;
-    });
-
+  .then(response => response.json())
+  .then(data => {
+    window.suggestionsData = data;
+  });
 const searchBar = document.querySelector("#input-div>input");
 
 searchBar.addEventListener("keyup", () => {
-    const suggestionsContainer = document.getElementById('suggestions');
-    suggestionsContainer.innerHTML = '';
-    
-    if (searchBar.value.length === 0) {
-        suggestionsContainer.style.display = "none";
-        return;
-    }
-    
-    const searchTerm = searchBar.value.toLowerCase();
-    
-    // Find first matching item where any key starts with search term
-    const matchedEntry = window.suggestionsData.find(entry => 
-        entry.key.some(key => key.toLowerCase().startsWith(searchTerm))
-    );
+  const suggestionsContainer = document.getElementById('suggestions');
+  suggestionsContainer.innerHTML = '';
 
-    if (matchedEntry) {
-        // Create matched item
+  if (searchBar.value.length === 0) {
+    suggestionsContainer.style.display = "none";
+    return;
+  }
+  const matched = Object.keys(window.suggestionsData)
+    .find(key => key.toLowerCase().startsWith(searchBar.value.toLowerCase()));
+
+  if (matched) {
+    const a = document.createElement('a');
+    a.id = 'matched-item';
+    a.textContent = matched;
+    a.href = window.suggestionsData[matched];
+    suggestionsContainer.appendChild(a);
+    suggestionsContainer.style.display = "flex";
+    const newSuggestionsData = Object.assign({}, window.suggestionsData);
+    delete newSuggestionsData[matched];
+    const suggestions = Object.keys(newSuggestionsData)
+      .filter(key => key.toLowerCase().includes(searchBar.value.toLowerCase()))
+      .map(key => {
         const a = document.createElement('a');
-        a.id = 'matched-item';
-        a.textContent = matchedEntry.key[0]; // Using first key for display
-        a.href = matchedEntry.value;
-        suggestionsContainer.appendChild(a);
-        suggestionsContainer.style.display = "flex";
+        a.className = 'suggestion-item';
+        a.textContent = key;
+        a.href = newSuggestionsData[key]
+        return a;
+      });
 
-        // Find other suggestions excluding the matched entry
-        const otherSuggestions = window.suggestionsData.filter(entry => 
-            entry !== matchedEntry &&
-            entry.key.some(key => key.toLowerCase().includes(searchTerm))
-        );
-
-        otherSuggestions.forEach(entry => {
-            const a = document.createElement('a');
-            a.className = 'suggestion-item';
-            a.textContent = entry.key[0]; // Using first key for display
-            a.href = entry.value;
-            suggestionsContainer.appendChild(a);
-        });
-    } else {
-        // Show all items that include the search term in any key
-        const allSuggestions = window.suggestionsData.filter(entry => 
-            entry.key.some(key => key.toLowerCase().includes(searchTerm))
-        );
-
-        allSuggestions.forEach(entry => {
-            const a = document.createElement('a');
-            a.className = 'suggestion-item';
-            a.textContent = entry.key[0]; // Using first key for display
-            a.href = entry.value;
-            suggestionsContainer.appendChild(a);
-        });
-
-        if (allSuggestions.length > 0) {
-            suggestionsContainer.style.display = "flex";
-        } else {
-            suggestionsContainer.style.display = "none";
-        }
-    }
-});
-
-searchBar.addEventListener("keyup", (e) => {
-    const suggestionsContainer = document.getElementById('suggestions');
-    let pageLinks = suggestionsContainer.querySelectorAll("a");
-    
-    if (e.key === "Enter") {
-        const matchedItem = document.querySelector("#matched-item");
-        if (matchedItem) {
-            matchedItem.click();
-            suggestionsContainer.style.display = "none";
-            searchBar.value = "";
-        }
-    }
-    
-    pageLinks.forEach(pageLink => {
+    suggestions.forEach(suggestion => {
+      suggestionsContainer.style.display = "flex";
+      suggestionsContainer.appendChild(suggestion)
+      let pageLinks = suggestionsContainer.querySelectorAll("a");
+      pageLinks.forEach(pageLink => {
         pageLink.addEventListener("click", () => {
-            suggestionsContainer.style.display = "none";
-            searchBar.value = ""
+          suggestionsContainer.style.display = "none";
+          searchBar.value = ""
         })
-    })
+      })
+    });
+
+  } else {
+    const suggestions = Object.keys(window.suggestionsData)
+      .filter(key => key.toLowerCase().includes(searchBar.value.toLowerCase()))
+      .map(key => {
+        const a = document.createElement('a');
+        a.className = 'suggestion-item';
+        a.textContent = key;
+        a.href = window.suggestionsData[key]
+        return a;
+      });
+
+    suggestions.forEach(suggestion => {
+      suggestionsContainer.style.display = "flex";
+      suggestionsContainer.appendChild(suggestion)
+    });
+  }
 });
+searchBar.addEventListener("keyup", (e) => {
+  const suggestionsContainer = document.getElementById('suggestions');
+  let pageLinks = suggestionsContainer.querySelectorAll("a");
+  if (e.key === "Enter") {
+    const matchedItem = document.querySelector("#matched-item");
+    if (matchedItem) {
+      matchedItem.click();
+      suggestionsContainer.style.display = "none";
+      searchBar.value = "";
+    }
+  }
+  pageLinks.forEach(pageLink => {
+    pageLink.addEventListener("click", () => {
+      suggestionsContainer.style.display = "none";
+      searchBar.value = ""
+    })
+  })
+})
 document.addEventListener("keydown", (e) => {
     if (e.key === "/") {
         const searchInput = document.querySelector("#search-input")
