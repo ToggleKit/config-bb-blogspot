@@ -1,14 +1,11 @@
 {
-  {
-   "key":["about","সমন্ধে","এবাউট"],
-   "value":"/p/about.html"
-  },
-{
-   "key":["home","homepage","index","হোম","ইনডেক্স","ঘর"],
-   "value":"/"
-  },
-{
-   "key":["privacy","প্রাইভেসি","গোপনীয়তা"],
-   "value":"/p/privacy.html"
-  }
+  "about":"/p/about.html",
+  "সমন্ধে":"/p/about.html",
+  "এবাউট":"/p/about.html",
+  "home":"/",
+  "homepage":"/",
+  "index":"/",
+  "হোম":"/",
+  "ইনডেক্স":"/",
+  "ঘর":"/"
 }
