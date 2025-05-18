@@ -1,3 +1,11 @@
+const elements = document.querySelectorAll(`[data-txtlimit]`);
+elements.forEach(element => {
+    const wordLimit = element.getAttribute('data-txtlimit')
+    const words = element.innerText.split(' ');
+    if (words.length > wordLimit) {
+        element.innerText = words.slice(0, wordLimit).join(' ') + '...';
+    }
+});
 const dBTN = document.querySelector("div#screen-bright");
 const nBTN = document.querySelector("div#screen-dark");
 if (localStorage.getItem("darkMode") === "on") {
