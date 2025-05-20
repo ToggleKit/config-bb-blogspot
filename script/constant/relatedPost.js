@@ -67,7 +67,7 @@ if (postPageSure) {
     const randomPosts = getRandomPosts(uniquePosts, 3);
 
     for (let postObj of randomPosts) {
-      let imgSrc = postObj.img.replace(`/s72-h400-c/`, `/h180`);
+      let imgSrc = postObj.img.replace(`/s72-h400-c`, `/h180`);
       eachRelatedPost.innerHTML += `<a href='${postObj.href}'><img src='${imgSrc}' alt='${postObj.title}' height='180'/> <h3>${postObj.title}</h3></a>`;
     }
 
