@@ -49,7 +49,10 @@ if (postPageSure) {
 
   // Function to filter unique posts after all API requests complete
   function filterUniquePosts() {
-    const currentURL = window.location.href;
+    let currentURL = window.location.href;
+    if (currentURL.endsWith('?m=1')) {
+      currentURL = currentURL.replace(`?m=1`,``);
+    }
 
     const uniquePosts = unfilteredPosts.reduce((acc, post) => {
       if (!acc.some(existingPost => existingPost.href === post.href) && post.href !== currentURL) {
