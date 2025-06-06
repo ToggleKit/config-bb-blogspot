@@ -40,7 +40,7 @@ document.querySelector("#cleaner").addEventListener("click", () => {
 document.querySelector("#closer").addEventListener("click", () => {
   document.querySelector("#search-input").removeAttribute("data-nextsiblingon")
 })
-fetch('https://raw.githubusercontent.com/ToggleKit/config-bb-blogspot/refs/heads/main/urls.json')
+fetch('https://before-buy-bd-default-rtdb.asia-southeast1.firebasedatabase.app/urls.json')
   .then(response => response.json())
   .then(data => {
     window.suggestionsData = data;
